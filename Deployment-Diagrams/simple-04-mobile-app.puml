@@ -1,0 +1,17 @@
+@startuml mobile-app
+title Mobile Application
+
+node "Mobile Device" as mobile {
+  [Mobile App]
+}
+
+node "API Server" as api {
+  [REST API]
+}
+
+database "Database" as db
+
+mobile --> api : HTTPS
+api --> db
+
+@enduml

@@ -1,0 +1,28 @@
+@startuml Library Book - State Diagram
+
+[*] --> Available : Book added to library
+
+Available --> Reserved : Member reserves book
+Available --> Borrowed : Member borrows book
+
+Reserved --> Borrowed : Reserved member borrows
+Reserved --> Available : Reservation cancelled / expired
+
+Borrowed --> Overdue : Due date passed
+Borrowed --> Returned : Book returned on time
+
+Overdue --> Returned : Book returned late
+
+Returned --> UnderReview : Check book condition
+UnderReview --> Available : Book in good condition
+UnderReview --> Damaged : Book damaged
+UnderReview --> Lost : Book not returned after 30 days
+
+Damaged --> UnderRepair : Send for repair
+UnderRepair --> Available : Repair completed
+UnderRepair --> Withdrawn : Cannot be repaired
+
+Lost --> Withdrawn : Replace or remove from system
+Withdrawn --> [*]
+
+@enduml

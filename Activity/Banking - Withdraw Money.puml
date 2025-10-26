@@ -1,0 +1,32 @@
+@startuml Banking - Withdraw Money
+
+start
+
+:Customer enters bank;
+:Fill withdraw form;
+:Submit to teller;
+
+:Teller verify identity;
+
+if (Identity valid?) then (yes)
+    :Check account balance;
+
+    if (Sufficient balance?) then (yes)
+        :Deduct amount from account;
+        :Update transaction log;
+        :Count cash;
+        :Give cash to customer;
+        :Print receipt;
+        :Customer receives money;
+        stop
+    else (no)
+        :Show error message;
+        :Return form;
+        stop
+    endif
+else (no)
+    :Request additional ID;
+    stop
+endif
+
+@enduml

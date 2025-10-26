@@ -1,0 +1,35 @@
+@startuml Banking - Withdraw Money
+
+actor Customer
+participant "Bank System" as System
+participant "Account DB" as DB
+participant "Transaction Log" as Log
+
+Customer -> System: Request Withdraw (amount)
+activate System
+
+System -> System: Verify Customer Identity
+System -> DB: Check Balance
+activate DB
+DB --> System: Balance Info
+deactivate DB
+
+alt Sufficient Balance
+    System -> DB: Deduct Amount
+    activate DB
+    DB --> System: Success
+    deactivate DB
+
+    System -> Log: Record Transaction
+    activate Log
+    Log --> System: Logged
+    deactivate Log
+
+    System --> Customer: Withdraw Success\n+ Receipt
+else Insufficient Balance
+    System --> Customer: Error: Insufficient Balance
+end
+
+deactivate System
+
+@enduml

@@ -1,0 +1,44 @@
+@startuml Library System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Member as m
+actor Librarian as l
+actor "Library Manager" as mgr
+
+rectangle "Library System" {
+    usecase "Register Member" as UC1
+    usecase "Search Books" as UC2
+    usecase "Borrow Book" as UC3
+    usecase "Return Book" as UC4
+    usecase "Reserve Book" as UC5
+    usecase "Renew Book" as UC6
+    usecase "Pay Fine" as UC7
+    usecase "Add New Book" as UC8
+    usecase "Remove Book" as UC9
+    usecase "Update Book Info" as UC10
+    usecase "Generate Report" as UC11
+    usecase "Manage Member" as UC12
+}
+
+m --> UC2
+m --> UC3
+m --> UC4
+m --> UC5
+m --> UC6
+m --> UC7
+
+l --> UC1
+l --> UC8
+l --> UC10
+l --> UC12
+
+mgr --> UC9
+mgr --> UC11
+
+UC3 ..> UC2 : <<include>>
+UC5 ..> UC2 : <<include>>
+UC4 ..> UC7 : <<extend>>
+
+@enduml

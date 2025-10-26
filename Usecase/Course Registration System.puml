@@ -1,0 +1,48 @@
+@startuml Course Registration System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Student as s
+actor Professor as p
+actor Registrar as r
+actor "Academic Advisor" as a
+
+rectangle "Course Registration System" {
+    usecase "Login" as UC1
+    usecase "View Course Catalog" as UC2
+    usecase "Search Courses" as UC3
+    usecase "Register for Course" as UC4
+    usecase "Drop Course" as UC5
+    usecase "View Schedule" as UC6
+    usecase "Check Prerequisites" as UC7
+    usecase "View Grades" as UC8
+    usecase "Submit Grades" as UC9
+    usecase "Manage Course" as UC10
+    usecase "View Enrolled Students" as UC11
+    usecase "Add Course" as UC12
+    usecase "Remove Course" as UC13
+    usecase "Approve Registration" as UC14
+}
+
+s --> UC1
+s --> UC2
+s --> UC3
+s --> UC4
+s --> UC5
+s --> UC6
+s --> UC8
+
+p --> UC9
+p --> UC10
+p --> UC11
+
+r --> UC12
+r --> UC13
+
+a --> UC14
+
+UC4 ..> UC7 : <<include>>
+UC4 ..> UC14 : <<extend>>
+
+@enduml

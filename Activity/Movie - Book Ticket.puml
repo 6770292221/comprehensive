@@ -1,0 +1,35 @@
+@startuml Movie - Book Ticket
+
+start
+
+:Customer opens app;
+:Browse movies;
+:Select movie;
+:Choose showtime;
+:View seat map;
+
+if (Available seats?) then (yes)
+    :Select seats;
+    :Seats locked for 5 min;
+    :Review booking;
+    :Proceed to payment;
+
+    if (Payment successful?) then (yes)
+        :Generate e-ticket;
+        :Generate QR code;
+        :Confirm seat booking;
+        :Send ticket via email;
+        :Display confirmation;
+        stop
+    else (no)
+        :Release seats;
+        :Display payment failed;
+        stop
+    endif
+else (no)
+    :Show fully booked;
+    :Suggest other showtimes;
+    stop
+endif
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml E-commerce - Online Shopping
+
+start
+
+:Browse products;
+:Search for item;
+
+if (Product found?) then (yes)
+    :View product details;
+    :Add to cart;
+
+    if (Continue shopping?) then (yes)
+        :Browse more products;
+    else (no)
+        :Go to cart;
+        :Review cart items;
+        :Proceed to checkout;
+        :Enter shipping address;
+        :Select payment method;
+
+        if (Payment successful?) then (yes)
+            :Create order;
+            :Send confirmation email;
+            :Clear cart;
+            :Display order number;
+            stop
+        else (no)
+            :Display error;
+            :Return to payment;
+            stop
+        endif
+    endif
+else (no)
+    :Show no results;
+    stop
+endif
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml Restaurant - Order Food
+
+actor Customer
+actor Waiter
+participant "POS System" as POS
+participant Kitchen
+participant "Inventory DB" as Inventory
+
+Customer -> Waiter: Request Menu
+Waiter -> Customer: Provide Menu
+
+Customer -> Waiter: Place Order
+activate Waiter
+
+Waiter -> POS: Enter Order
+activate POS
+
+POS -> Inventory: Check Ingredients
+activate Inventory
+
+alt Ingredients Available
+    Inventory --> POS: Available
+    deactivate Inventory
+
+    POS -> Kitchen: Send Order
+    activate Kitchen
+
+    POS --> Waiter: Order Confirmed
+    Waiter --> Customer: Order Confirmed\n(Estimated Time: 20 min)
+
+    Kitchen -> Kitchen: Prepare Food
+    Kitchen --> Waiter: Food Ready
+    deactivate Kitchen
+
+    Waiter -> Customer: Serve Food
+    deactivate Waiter
+
+else Ingredients Not Available
+    Inventory --> POS: Not Available
+    deactivate Inventory
+    POS --> Waiter: Item Unavailable
+    Waiter --> Customer: Sorry, Item Not Available
+    deactivate Waiter
+end
+
+deactivate POS
+
+@enduml

@@ -1,0 +1,48 @@
+@startuml Restaurant System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Customer as c
+actor Waiter as w
+actor Chef as ch
+actor Cashier as ca
+actor Manager as m
+
+rectangle "Restaurant System" {
+    usecase "View Menu" as UC1
+    usecase "Place Order" as UC2
+    usecase "Modify Order" as UC3
+    usecase "Cancel Order" as UC4
+    usecase "Prepare Food" as UC5
+    usecase "Serve Food" as UC6
+    usecase "Request Bill" as UC7
+    usecase "Process Payment" as UC8
+    usecase "Manage Menu" as UC9
+    usecase "Manage Reservation" as UC10
+    usecase "Generate Daily Report" as UC11
+    usecase "Take Order" as UC12
+}
+
+c --> UC1
+c --> UC7
+
+w --> UC12
+w --> UC3
+w --> UC4
+w --> UC6
+w --> UC10
+
+ch --> UC5
+
+ca --> UC8
+
+m --> UC9
+m --> UC11
+
+UC2 ..> UC1 : <<include>>
+UC12 ..> UC2 : <<include>>
+UC5 ..> UC2 : <<include>>
+UC8 ..> UC7 : <<include>>
+
+@enduml

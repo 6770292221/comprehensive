@@ -1,0 +1,51 @@
+@startuml Smart Bus - Request and Track
+
+actor Passenger
+participant "Mobile App" as App
+participant "Routing Service" as Routing
+participant "Bus Tracker" as Tracker
+participant "Notification Service" as Notify
+
+Passenger -> App: Open App + Login
+activate App
+
+Passenger -> App: Request Bus\n(Pickup, Destination)
+
+App -> Routing: Calculate Route + ETA
+activate Routing
+Routing --> App: Route + ETA (15 min)
+deactivate Routing
+
+App --> Passenger: Show ETA + Confirmation
+
+Passenger -> App: Confirm Request
+
+App -> Routing: Assign Bus
+activate Routing
+Routing --> App: Bus Assigned (Bus #123)
+deactivate Routing
+
+App --> Passenger: Bus Confirmed\n(Bus #123 arriving in 15 min)
+
+loop Every 10 seconds
+    App -> Tracker: Get Bus Location
+    activate Tracker
+    Tracker --> App: Current Location
+    deactivate Tracker
+    App --> Passenger: Update Map
+end
+
+Tracker -> Notify: Bus Near Pickup (2 min)
+activate Notify
+Notify -> App: Push Notification
+deactivate Notify
+
+App --> Passenger: Alert: Bus Arriving Soon!
+
+Passenger -> App: Board Bus
+
+App --> Passenger: Enjoy Your Ride!
+
+deactivate App
+
+@enduml

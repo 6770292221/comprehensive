@@ -1,0 +1,31 @@
+@startuml Payment Transaction - State Diagram
+
+[*] --> Initiated : Customer clicks Pay
+
+Initiated --> Pending : Payment details submitted
+Pending --> Authorizing : Contact payment gateway
+
+Authorizing --> Authorized : Card/account valid
+Authorizing --> Declined : Invalid card / insufficient funds
+
+Authorized --> Processing : Deduct amount
+Processing --> Completed : Transaction successful
+Processing --> Failed : Transaction error
+
+Declined --> Retry : Allow retry
+Declined --> Cancelled : Max retries exceeded
+
+Failed --> Retry : Allow retry
+Failed --> Refunding : System error - refund
+
+Retry --> Pending : Customer tries again
+Retry --> Cancelled : Customer cancels
+
+Refunding --> Refunded : Refund completed
+Completed --> Settled : Amount transferred to merchant
+
+Refunded --> [*]
+Settled --> [*]
+Cancelled --> [*]
+
+@enduml

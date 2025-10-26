@@ -1,0 +1,58 @@
+@startuml ATM - Cash Withdrawal
+
+actor Customer
+participant ATM
+participant "Bank System" as Bank
+participant "Card Reader" as Card
+participant "Cash Dispenser" as Cash
+
+Customer -> ATM: Insert Card
+activate ATM
+ATM -> Card: Read Card
+activate Card
+Card --> ATM: Card Data
+deactivate Card
+
+ATM -> Customer: Request PIN
+Customer -> ATM: Enter PIN
+
+ATM -> Bank: Verify PIN
+activate Bank
+Bank --> ATM: PIN Valid
+deactivate Bank
+
+ATM -> Customer: Show Menu
+Customer -> ATM: Select Withdraw
+
+ATM -> Customer: Enter Amount
+Customer -> ATM: Amount (e.g., 1000)
+
+ATM -> Bank: Check Balance
+activate Bank
+
+alt Sufficient Balance
+    Bank --> ATM: Balance OK
+    deactivate Bank
+
+    ATM -> Cash: Dispense Cash
+    activate Cash
+    Cash --> ATM: Cash Released
+    deactivate Cash
+
+    ATM -> Bank: Update Balance
+    activate Bank
+    Bank --> ATM: Updated
+    deactivate Bank
+
+    ATM -> Customer: Print Receipt
+    ATM -> Customer: Return Card
+else Insufficient Balance
+    Bank --> ATM: Insufficient Funds
+    deactivate Bank
+    ATM -> Customer: Error Message
+    ATM -> Customer: Return Card
+end
+
+deactivate ATM
+
+@enduml

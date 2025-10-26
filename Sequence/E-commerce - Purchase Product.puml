@@ -1,0 +1,62 @@
+@startuml E-commerce - Purchase Product
+
+actor Customer
+participant "Web App" as App
+participant "Product Service" as Product
+participant "Cart Service" as Cart
+participant "Payment Gateway" as Payment
+participant "Order Service" as Order
+
+Customer -> App: Browse Products
+activate App
+
+App -> Product: Get Product List
+activate Product
+Product --> App: Product List
+deactivate Product
+
+App --> Customer: Display Products
+
+Customer -> App: Add to Cart
+App -> Cart: Add Item
+activate Cart
+Cart --> App: Item Added
+deactivate Cart
+
+Customer -> App: Proceed to Checkout
+App -> Cart: Get Cart Items
+activate Cart
+Cart --> App: Cart Summary
+deactivate Cart
+
+App --> Customer: Show Cart Summary
+
+Customer -> App: Confirm Order
+
+App -> Payment: Process Payment
+activate Payment
+
+alt Payment Success
+    Payment --> App: Payment Confirmed
+    deactivate Payment
+
+    App -> Order: Create Order
+    activate Order
+    Order --> App: Order Created
+    deactivate Order
+
+    App -> Cart: Clear Cart
+    activate Cart
+    Cart --> App: Cart Cleared
+    deactivate Cart
+
+    App --> Customer: Order Success\n(Order Number: #12345)
+else Payment Failed
+    Payment --> App: Payment Failed
+    deactivate Payment
+    App --> Customer: Payment Error\n(Please Try Again)
+end
+
+deactivate App
+
+@enduml

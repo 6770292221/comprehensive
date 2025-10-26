@@ -1,0 +1,42 @@
+@startuml Course - Register Course
+
+start
+
+:Student logs in;
+:Search for courses;
+:View course list;
+:Select course;
+
+:Check prerequisites;
+
+if (Prerequisites met?) then (yes)
+    :Check seat availability;
+
+    if (Seats available?) then (yes)
+        :Add course to cart;
+        :Review schedule;
+
+        if (No time conflict?) then (yes)
+            :Confirm registration;
+            :Enroll student;
+            :Update course capacity;
+            :Send confirmation email;
+            :Display success message;
+            stop
+        else (no)
+            :Show time conflict;
+            :Remove from cart;
+            stop
+        endif
+    else (no)
+        :Show course full;
+        :Offer waitlist option;
+        stop
+    endif
+else (no)
+    :Display missing prerequisites;
+    :Show required courses;
+    stop
+endif
+
+@enduml

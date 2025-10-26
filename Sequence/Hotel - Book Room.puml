@@ -1,0 +1,47 @@
+@startuml Hotel - Book Room
+
+actor Guest
+participant "Booking System" as System
+participant "Room Database" as RoomDB
+participant "Payment Gateway" as Payment
+participant "Email Service" as Email
+
+Guest -> System: Search Available Rooms\n(Date, Room Type)
+activate System
+
+System -> RoomDB: Query Available Rooms
+activate RoomDB
+RoomDB --> System: Available Rooms List
+deactivate RoomDB
+
+System --> Guest: Display Available Rooms
+
+Guest -> System: Select Room + Book
+
+System -> Payment: Process Payment
+activate Payment
+
+alt Payment Success
+    Payment --> System: Payment Confirmed
+    deactivate Payment
+
+    System -> RoomDB: Reserve Room
+    activate RoomDB
+    RoomDB --> System: Room Reserved
+    deactivate RoomDB
+
+    System -> Email: Send Confirmation
+    activate Email
+    Email --> System: Email Sent
+    deactivate Email
+
+    System --> Guest: Booking Confirmed\n+ Confirmation Number
+else Payment Failed
+    Payment --> System: Payment Failed
+    deactivate Payment
+    System --> Guest: Booking Failed\n(Try Again)
+end
+
+deactivate System
+
+@enduml

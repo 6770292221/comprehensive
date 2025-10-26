@@ -1,0 +1,24 @@
+@startuml load-balancer
+title System with Load Balancer
+
+actor User
+
+node "Load Balancer" as lb
+
+node "Server 1" as srv1 {
+  [App]
+}
+
+node "Server 2" as srv2 {
+  [App]
+}
+
+database "Shared Database" as db
+
+User --> lb
+lb --> srv1
+lb --> srv2
+srv1 --> db
+srv2 --> db
+
+@enduml

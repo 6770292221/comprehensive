@@ -1,0 +1,29 @@
+@startuml Ticket Booking - State Diagram
+
+[*] --> Searching : Customer browses movies
+
+Searching --> SeatSelection : Movie and showtime selected
+SeatSelection --> SeatsLocked : Seats selected (lock 5 min)
+
+SeatsLocked --> PendingPayment : Proceed to payment
+SeatsLocked --> Released : Timeout (5 min expired)
+
+PendingPayment --> PaymentProcessing : Payment initiated
+PaymentProcessing --> Confirmed : Payment successful
+PaymentProcessing --> PaymentFailed : Payment declined
+
+PaymentFailed --> Released : Seats released
+Confirmed --> TicketIssued : Generate e-ticket
+
+TicketIssued --> Active : Ticket ready for use
+Active --> Used : Ticket scanned at cinema
+Active --> Cancelled : Customer cancels (refund policy)
+
+Used --> Completed : Movie watched
+Cancelled --> Refunded : Refund processed
+
+Refunded --> [*]
+Completed --> [*]
+Released --> Searching : Return to search
+
+@enduml

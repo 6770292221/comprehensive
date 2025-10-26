@@ -1,0 +1,27 @@
+@startuml User Account - State Diagram
+
+[*] --> Registered : User signs up
+
+Registered --> PendingVerification : Email sent
+PendingVerification --> Active : Email verified
+PendingVerification --> Expired : Verification link expired
+
+Expired --> PendingVerification : Resend verification
+Expired --> Deleted : Account not verified (30 days)
+
+Active --> Suspended : Policy violation
+Active --> Locked : Too many login attempts
+Active --> Inactive : No activity (1 year)
+
+Suspended --> Active : Appeal approved
+Suspended --> Deleted : Permanent ban
+
+Locked --> Active : Password reset
+Locked --> Deleted : Account deletion requested
+
+Inactive --> Active : User logs in
+Inactive --> Deleted : User requests deletion
+
+Deleted --> [*]
+
+@enduml

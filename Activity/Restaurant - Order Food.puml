@@ -1,0 +1,47 @@
+@startuml Restaurant - Order Food
+
+|Customer|
+start
+:View menu;
+:Decide order;
+:Call waiter;
+
+|Waiter|
+:Come to table;
+:Take order;
+:Enter order into POS;
+
+|Kitchen|
+:Receive order;
+:Check ingredients;
+
+if (Ingredients available?) then (yes)
+    :Prepare food;
+    :Cook food;
+    :Plate food;
+    :Ring bell;
+else (no)
+    |Waiter|
+    :Inform customer;
+    stop
+endif
+
+|Waiter|
+:Pick up food;
+:Serve to customer;
+
+|Customer|
+:Eat food;
+:Request bill;
+
+|Waiter|
+:Generate bill;
+:Present bill;
+
+|Customer|
+:Pay bill;
+:Leave restaurant;
+
+stop
+
+@enduml

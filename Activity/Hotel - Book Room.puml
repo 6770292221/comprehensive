@@ -1,0 +1,31 @@
+@startuml Hotel - Book Room
+
+start
+
+:Guest searches for rooms;
+:Enter dates and room type;
+:View available rooms;
+
+if (Rooms available?) then (yes)
+    :Select room;
+    :Enter guest details;
+    :Proceed to payment;
+
+    if (Payment successful?) then (yes)
+        :Generate booking confirmation;
+        :Send confirmation email;
+        :Reserve room in system;
+        :Display confirmation number;
+        stop
+    else (no)
+        :Display payment error;
+        :Offer to retry;
+        stop
+    endif
+else (no)
+    :Display no rooms available;
+    :Suggest alternative dates;
+    stop
+endif
+
+@enduml

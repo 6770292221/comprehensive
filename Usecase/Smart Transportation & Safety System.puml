@@ -1,0 +1,158 @@
+@startuml Smart Transportation & Safety System
+
+left to right direction
+skinparam packageStyle rectangle
+
+' ===== Actors =====
+actor "Passenger" as passenger
+actor "Bus Driver" as driver
+actor "Operations Center" as ops
+actor "System Admin" as admin
+actor "Safety Officer" as safety
+actor "Enforcement Agency" as enforce
+actor "AI System" as ai <<system>>
+actor "Payment Gateway" as payment <<system>>
+
+' ===== Package 1: Smart Bus Request & Scheduling =====
+package "Smart Bus Request & Scheduling" {
+    usecase "Request Bus" as UC1
+    usecase "View ETA" as UC2
+    usecase "Track Bus Location" as UC3
+    usecase "Select Pickup/Destination" as UC4
+    usecase "Receive Notifications" as UC5
+    usecase "Verify Boarding" as UC6
+    usecase "Make Payment" as UC7
+    usecase "View Booking History" as UC8
+    usecase "Report Incident" as UC9
+
+    usecase "Accept Job" as UC10
+    usecase "Navigate Route" as UC11
+    usecase "Update Status" as UC12
+    usecase "View Assigned Tasks" as UC13
+
+    usecase "Monitor Fleet" as UC14
+    usecase "Assign Vehicle/Driver" as UC15
+    usecase "Optimize Routing" as UC16
+    usecase "Manage Stop Points" as UC17
+    usecase "Handle Emergency" as UC18
+    usecase "View Operations Dashboard" as UC19
+
+    usecase "Schedule Maintenance" as UC20
+    usecase "Manage Vehicles" as UC21
+    usecase "Generate Reports" as UC22
+    usecase "Export Data" as UC23
+    usecase "Configure System" as UC24
+}
+
+' ===== Package 2: AI Road Safety Monitoring =====
+package "AI Road Safety Monitoring" {
+    usecase "Detect Drowsiness" as UC30
+    usecase "Detect Phone Usage" as UC31
+    usecase "Detect Seatbelt Violation" as UC32
+    usecase "Monitor Speed" as UC33
+    usecase "Detect Red Light Violation" as UC34
+    usecase "Calculate Risk Score" as UC35
+    usecase "Capture Evidence Video" as UC36
+    usecase "Alert Driver in Real-time" as UC37
+
+    usecase "Review Safety Events" as UC40
+    usecase "Confirm/Reject Events" as UC41
+    usecase "View Safety Analytics" as UC42
+    usecase "View Risk Heatmap" as UC43
+    usecase "Submit to Enforcement" as UC44
+
+    usecase "Configure Safety Policies" as UC50
+    usecase "Set Speed Thresholds" as UC51
+    usecase "Manage Detection Rules" as UC52
+    usecase "View Audit Trail" as UC53
+}
+
+' ===== Passenger Interactions =====
+passenger --> UC1
+passenger --> UC2
+passenger --> UC3
+passenger --> UC5
+passenger --> UC6
+passenger --> UC7
+passenger --> UC8
+passenger --> UC9
+
+' ===== Driver Interactions =====
+driver --> UC10
+driver --> UC11
+driver --> UC12
+driver --> UC13
+driver --> UC9
+
+' ===== Operations Center Interactions =====
+ops --> UC14
+ops --> UC15
+ops --> UC16
+ops --> UC17
+ops --> UC18
+ops --> UC19
+ops --> UC22
+
+' ===== Admin Interactions =====
+admin --> UC20
+admin --> UC21
+admin --> UC22
+admin --> UC23
+admin --> UC24
+admin --> UC50
+admin --> UC51
+admin --> UC52
+admin --> UC53
+
+' ===== Safety Officer Interactions =====
+safety --> UC40
+safety --> UC41
+safety --> UC42
+safety --> UC43
+safety --> UC44
+
+' ===== Enforcement Agency Interactions =====
+enforce --> UC44
+
+' ===== AI System Interactions =====
+ai --> UC30
+ai --> UC31
+ai --> UC32
+ai --> UC33
+ai --> UC34
+ai --> UC35
+ai --> UC36
+
+' ===== Payment Gateway Interactions =====
+payment --> UC7
+
+' ===== Relationships: Smart Bus System =====
+UC1 ..> UC4 : <<include>>
+UC1 ..> UC2 : <<include>>
+UC2 ..> UC3 : <<include>>
+UC1 ..> UC7 : <<extend>>
+UC1 ..> UC5 : <<extend>>
+UC10 ..> UC12 : <<include>>
+UC15 ..> UC16 : <<include>>
+UC14 ..> UC19 : <<include>>
+UC22 ..> UC23 : <<extend>>
+
+' ===== Relationships: AI Safety System =====
+UC30 ..> UC35 : <<include>>
+UC31 ..> UC35 : <<include>>
+UC32 ..> UC35 : <<include>>
+UC33 ..> UC35 : <<include>>
+UC34 ..> UC35 : <<include>>
+UC35 ..> UC36 : <<include>>
+UC35 ..> UC37 : <<extend>>
+UC41 ..> UC40 : <<include>>
+UC44 ..> UC41 : <<include>>
+UC42 ..> UC43 : <<extend>>
+UC51 ..> UC50 : <<include>>
+UC52 ..> UC50 : <<include>>
+
+' ===== Cross-System Relationships =====
+UC12 ..> UC3 : <<extend>>
+UC37 ..> UC9 : <<extend>>
+
+@enduml

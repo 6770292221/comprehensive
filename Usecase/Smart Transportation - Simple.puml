@@ -1,0 +1,30 @@
+@startuml Smart Transportation - Simple Version
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Passenger" as passenger
+actor "Bus Driver" as driver
+actor "Operations Center" as ops
+
+rectangle "Smart Transportation System" {
+    usecase "Request Bus" as UC1
+    usecase "Track Bus" as UC2
+    usecase "Pay Fare" as UC3
+    usecase "View Route" as UC4
+    usecase "Monitor Fleet" as UC5
+    usecase "Assign Driver" as UC6
+}
+
+passenger --> UC1
+passenger --> UC2
+passenger --> UC3
+
+driver --> UC4
+
+ops --> UC5
+ops --> UC6
+
+UC1 ..> UC2 : <<include>>
+
+@enduml

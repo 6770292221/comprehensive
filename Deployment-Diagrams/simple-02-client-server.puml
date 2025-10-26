@@ -1,0 +1,17 @@
+@startuml client-server
+title Client-Server Architecture
+
+node "Client 1" as client1
+node "Client 2" as client2
+node "Client 3" as client3
+
+node "Server" as server {
+  [Application]
+  database "Database"
+}
+
+client1 --> server
+client2 --> server
+client3 --> server
+
+@enduml

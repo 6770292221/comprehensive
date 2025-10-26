@@ -1,0 +1,37 @@
+@startuml ATM Session - State Diagram
+
+[*] --> Idle : ATM powered on
+
+Idle --> CardInserted : Card inserted
+CardInserted --> PINEntry : Request PIN
+
+PINEntry --> Authenticating : PIN entered
+Authenticating --> Authenticated : PIN correct
+Authenticating --> PINEntry : PIN incorrect (attempts < 3)
+Authenticating --> CardBlocked : PIN incorrect (attempts = 3)
+
+Authenticated --> ShowMenu : Display main menu
+
+ShowMenu --> Withdraw : Select withdraw
+ShowMenu --> CheckBalance : Select balance
+ShowMenu --> Deposit : Select deposit
+ShowMenu --> Transfer : Select transfer
+
+Withdraw --> Processing : Enter amount
+CheckBalance --> ShowMenu : Display balance
+Deposit --> Processing : Insert cash
+Transfer --> Processing : Enter details
+
+Processing --> Success : Transaction successful
+Processing --> Failed : Transaction failed
+
+Success --> PrintReceipt : Print receipt
+Failed --> ShowMenu : Return to menu
+
+PrintReceipt --> EjectCard : Receipt printed
+ShowMenu --> EjectCard : Timeout / Cancel
+
+EjectCard --> Idle : Card ejected
+CardBlocked --> EjectCard : Card blocked
+
+@enduml

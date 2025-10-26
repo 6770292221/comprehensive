@@ -1,0 +1,26 @@
+@startuml Hotel Reservation - State Diagram
+
+[*] --> New : Guest creates reservation
+
+New --> PendingPayment : Room selected
+PendingPayment --> Confirmed : Payment successful
+PendingPayment --> Cancelled : Payment failed / timeout
+
+Confirmed --> CheckedIn : Guest arrives and checks in
+Confirmed --> NoShow : Guest doesn't arrive
+Confirmed --> Cancelled : Guest cancels before arrival
+
+CheckedIn --> Active : Guest occupying room
+Active --> CheckedOut : Guest checks out
+
+CheckedOut --> Completed : Bill settled
+NoShow --> Cancelled : No-show fee charged
+
+Cancelled --> Refunded : Process refund (if applicable)
+Completed --> Reviewed : Guest submits review
+
+Refunded --> [*]
+Reviewed --> [*]
+Completed --> [*]
+
+@enduml

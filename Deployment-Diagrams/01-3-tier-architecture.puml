@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+title 3-Tier Architecture - Specification Level
+
+skinparam nodeBackgroundColor lightyellow
+skinparam nodeBackgroundColor<<database>> lightblue
+skinparam nodeBackgroundColor<<client>> lightgreen
+
+node "<<device>>\nClient Machine" as client <<client>> {
+  [Web Browser]
+}
+
+node "<<application server>>\nWeb/App Server" as appserver {
+  [Web Application]
+  [Business Logic]
+}
+
+node "<<database server>>\nDatabase Server" as dbserver <<database>> {
+  [Database Management System]
+  database "Application DB"
+}
+
+client -down-> appserver : <<HTTP/HTTPS>>
+appserver -down-> dbserver : <<JDBC/SQL>>
+
+note right of client
+  User Interface Layer
+  - HTML/CSS/JavaScript
+  - Responsive Design
+  - Mobile/Desktop
+end note
+
+note right of appserver
+  Application Layer
+  - Business Logic
+  - API Endpoints
+  - Session Management
+  - Validation
+end note
+
+note right of dbserver
+  Data Layer
+  - Persistent Storage
+  - ACID Transactions
+  - Backup & Recovery
+end note
+
+@enduml

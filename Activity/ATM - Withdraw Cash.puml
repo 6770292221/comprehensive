@@ -1,0 +1,45 @@
+@startuml ATM - Withdraw Cash
+
+start
+
+:Customer inserts card;
+:ATM reads card;
+:Request PIN;
+:Customer enters PIN;
+
+if (PIN correct?) then (yes)
+    :Display main menu;
+    :Customer selects Withdraw;
+    :Enter amount;
+
+    if (Amount valid?) then (yes)
+        :Check balance;
+
+        if (Sufficient funds?) then (yes)
+            :Dispense cash;
+            :Update balance;
+            :Print receipt;
+            :Eject card;
+            :Customer takes cash and card;
+            stop
+        else (no)
+            :Display insufficient funds;
+            :Return to menu;
+            stop
+        endif
+    else (no)
+        :Display invalid amount;
+        stop
+    endif
+else (no)
+    :Display error;
+    if (Attempts < 3?) then (yes)
+        :Request PIN again;
+        stop
+    else (no)
+        :Block card;
+        stop
+    endif
+endif
+
+@enduml

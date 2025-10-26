@@ -1,0 +1,62 @@
+@startuml Course - Register Course
+
+actor Student
+participant "Registration System" as System
+participant "Course Database" as CourseDB
+participant "Student Database" as StudentDB
+participant "Prerequisite Checker" as Checker
+
+Student -> System: Login
+activate System
+
+System -> StudentDB: Verify Student
+activate StudentDB
+StudentDB --> System: Student Info
+deactivate StudentDB
+
+Student -> System: Search Course
+
+System -> CourseDB: Query Courses
+activate CourseDB
+CourseDB --> System: Course List
+deactivate CourseDB
+
+System --> Student: Display Courses
+
+Student -> System: Select Course
+
+System -> Checker: Check Prerequisites
+activate Checker
+
+alt Prerequisites Met
+    Checker --> System: Check Passed
+    deactivate Checker
+
+    System -> CourseDB: Check Seat Availability
+    activate CourseDB
+
+    alt Seats Available
+        CourseDB --> System: Seats Available
+        deactivate CourseDB
+
+        System -> CourseDB: Enroll Student
+        activate CourseDB
+        CourseDB --> System: Enrollment Success
+        deactivate CourseDB
+
+        System --> Student: Registration Success\n(Course Added)
+    else No Seats
+        CourseDB --> System: Course Full
+        deactivate CourseDB
+        System --> Student: Course Full\n(Join Waitlist?)
+    end
+
+else Prerequisites Not Met
+    Checker --> System: Prerequisites Missing
+    deactivate Checker
+    System --> Student: Cannot Register\n(Missing: Course ABC)
+end
+
+deactivate System
+
+@enduml

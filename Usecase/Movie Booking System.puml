@@ -1,0 +1,46 @@
+@startuml Movie Booking System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Customer as c
+actor "System Admin" as a
+actor "Cinema Manager" as m
+
+rectangle "Movie Booking System" {
+    usecase "Register Account" as UC1
+    usecase "Login" as UC2
+    usecase "Browse Movies" as UC3
+    usecase "View Movie Details" as UC4
+    usecase "Check Seat Availability" as UC5
+    usecase "Book Ticket" as UC6
+    usecase "Select Seats" as UC7
+    usecase "Make Payment" as UC8
+    usecase "Cancel Booking" as UC9
+    usecase "View Booking History" as UC10
+    usecase "Add Movie" as UC11
+    usecase "Remove Movie" as UC12
+    usecase "Update Showtime" as UC13
+    usecase "Generate Sales Report" as UC14
+}
+
+c --> UC1
+c --> UC2
+c --> UC3
+c --> UC4
+c --> UC6
+c --> UC9
+c --> UC10
+
+a --> UC11
+a --> UC12
+
+m --> UC13
+m --> UC14
+
+UC6 ..> UC5 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC6 ..> UC8 : <<include>>
+UC4 ..> UC3 : <<extend>>
+
+@enduml

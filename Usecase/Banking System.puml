@@ -1,0 +1,44 @@
+@startuml Banking System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Customer as c
+actor "Bank Employee" as e
+actor "Bank Manager" as m
+
+rectangle "Banking System" {
+    usecase "Open Account" as UC1
+    usecase "Deposit Money" as UC2
+    usecase "Withdraw Money" as UC3
+    usecase "Transfer Money" as UC4
+    usecase "Check Balance" as UC5
+    usecase "Apply for Loan" as UC6
+    usecase "Approve Loan" as UC7
+    usecase "Close Account" as UC8
+    usecase "Generate Report" as UC9
+    usecase "Manage Customer Account" as UC10
+    usecase "View Transaction History" as UC11
+}
+
+c --> UC1
+c --> UC2
+c --> UC3
+c --> UC4
+c --> UC5
+c --> UC6
+c --> UC11
+
+e --> UC10
+e --> UC9
+e --> UC1
+
+m --> UC7
+m --> UC8
+m --> UC9
+
+UC6 ..> UC7 : <<include>>
+UC2 ..> UC5 : <<extend>>
+UC3 ..> UC5 : <<extend>>
+
+@enduml

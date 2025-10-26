@@ -1,0 +1,88 @@
+@startuml cloud-hybrid
+!theme plain
+title Hybrid Cloud Architecture
+
+skinparam cloudBackgroundColor lightblue
+skinparam cloudBackgroundColor<<private>> lightgreen
+
+cloud "Public Cloud\n(AWS/Azure/GCP)" as public {
+  node "<<load balancer>>\nLoad Balancer" as lb {
+    [AWS ELB / ALB]
+  }
+
+  node "<<application server>>\nApp Server 1" as app1 {
+    [Web Application]
+    artifact "app.jar"
+  }
+
+  node "<<application server>>\nApp Server 2" as app2 {
+    [Web Application]
+    artifact "app.jar"
+  }
+
+  node "<<storage>>\nCloud Storage" as storage {
+    [S3 / Blob Storage]
+  }
+
+  node "<<cache>>\nCache Server" as cache {
+    [Redis / Memcached]
+  }
+}
+
+cloud "Private Cloud\n(On-Premise)" as private <<private>> {
+  node "<<database server>>\nDatabase Server" as db {
+    component "PostgreSQL" as postgres
+    database "CustomerDB" as custdb
+    postgres --> custdb
+  }
+
+  node "<<backup server>>\nBackup Server" as backup {
+    [Backup System]
+    database "Backup Storage"
+  }
+}
+
+actor "Mobile User" as mobile
+actor "Web User" as web
+
+mobile -down-> lb : <<HTTPS>>
+web -down-> lb : <<HTTPS>>
+lb -down-> app1 : <<HTTP>>
+lb -down-> app2 : <<HTTP>>
+
+app1 -down-> cache : <<Redis Protocol>>
+app2 -down-> cache : <<Redis Protocol>>
+
+app1 --> storage : <<S3 API>>
+app2 --> storage : <<S3 API>>
+
+app1 -down-> db : <<VPN/JDBC>>
+app2 -down-> db : <<VPN/JDBC>>
+
+db -right-> backup : <<scheduled backup>>
+
+note right of lb
+  Load Balancing:
+  - Round Robin
+  - Health Checks
+  - SSL Termination
+  - Auto Scaling
+end note
+
+note bottom of db
+  Private Cloud:
+  - Sensitive Data
+  - Compliance Requirements
+  - Full Control
+  - High Security
+end note
+
+note top of storage
+  Cloud Storage:
+  - Static Assets
+  - User Uploads
+  - Media Files
+  - CDN Integration
+end note
+
+@enduml

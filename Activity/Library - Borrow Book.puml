@@ -1,0 +1,40 @@
+@startuml Library - Borrow Book
+
+start
+
+:Member searches for book;
+
+if (Book found?) then (yes)
+    :Check book availability;
+
+    if (Book available?) then (yes)
+        :Member requests to borrow;
+        :Librarian verifies member status;
+
+        if (Member status valid?) then (yes)
+            if (No overdue books?) then (yes)
+                :Scan book barcode;
+                :Scan member card;
+                :Update loan record;
+                :Set due date (14 days);
+                :Print loan receipt;
+                :Give book to member;
+                stop
+            else (no)
+                :Request payment of fines;
+                stop
+            endif
+        else (no)
+            :Reject borrowing;
+            stop
+        endif
+    else (no)
+        :Offer to reserve book;
+        stop
+    endif
+else (no)
+    :Suggest similar books;
+    stop
+endif
+
+@enduml

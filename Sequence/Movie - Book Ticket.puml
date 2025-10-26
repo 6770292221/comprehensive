@@ -1,0 +1,70 @@
+@startuml Movie - Book Ticket
+
+actor Customer
+participant "Booking App" as App
+participant "Movie Service" as Movie
+participant "Seat Service" as Seat
+participant "Payment Gateway" as Payment
+participant "Ticket Service" as Ticket
+
+Customer -> App: Browse Movies
+activate App
+
+App -> Movie: Get Available Movies
+activate Movie
+Movie --> App: Movie List
+deactivate Movie
+
+App --> Customer: Display Movies
+
+Customer -> App: Select Movie + Showtime
+
+App -> Seat: Get Available Seats
+activate Seat
+Seat --> App: Seat Map
+deactivate Seat
+
+App --> Customer: Display Seat Map
+
+Customer -> App: Select Seats
+
+App -> Seat: Lock Seats (5 min)
+activate Seat
+Seat --> App: Seats Locked
+deactivate Seat
+
+Customer -> App: Confirm Booking
+
+App -> Payment: Process Payment
+activate Payment
+
+alt Payment Success
+    Payment --> App: Payment Confirmed
+    deactivate Payment
+
+    App -> Ticket: Generate Ticket
+    activate Ticket
+    Ticket --> App: E-Ticket + QR Code
+    deactivate Ticket
+
+    App -> Seat: Confirm Booking
+    activate Seat
+    Seat --> App: Seats Confirmed
+    deactivate Seat
+
+    App --> Customer: Ticket Sent\n(Check Email)
+else Payment Failed
+    Payment --> App: Payment Failed
+    deactivate Payment
+
+    App -> Seat: Release Seats
+    activate Seat
+    Seat --> App: Seats Released
+    deactivate Seat
+
+    App --> Customer: Booking Failed
+end
+
+deactivate App
+
+@enduml

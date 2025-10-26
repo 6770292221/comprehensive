@@ -1,0 +1,18 @@
+@startuml basic-web
+title Basic Web Application
+
+actor User
+
+node "Web Browser" as browser
+
+node "Web Server" as web {
+  [Application]
+}
+
+database "Database" as db
+
+User --> browser
+browser --> web : HTTP/HTTPS
+web --> db : SQL
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml three-tier
+title 3-Tier Architecture (Simple)
+
+node "Client" as client {
+  [Browser/App]
+}
+
+node "Application Server" as app {
+  [Business Logic]
+}
+
+node "Database Server" as db {
+  database "DB"
+}
+
+client --> app : Request
+app --> db : Query
+
+@enduml

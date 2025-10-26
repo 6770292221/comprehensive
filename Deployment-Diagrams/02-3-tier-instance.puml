@@ -1,0 +1,47 @@
+@startuml 3-tier-instance
+!theme plain
+title 3-Tier Architecture - Instance Level
+
+skinparam nodeBackgroundColor lightyellow
+
+node "client-pc01:ClientMachine" as client1 {
+  component "Chrome Browser" as chrome
+}
+
+node "client-pc02:ClientMachine" as client2 {
+  component "Firefox Browser" as firefox
+}
+
+node "app-srv01:AppServer" as appserver {
+  component "Apache Tomcat 9.0" as tomcat
+  artifact "myapp.war" as war
+  tomcat --> war : <<deploy>>
+}
+
+node "db-srv01:DatabaseServer" as dbserver {
+  component "MySQL 8.0" as mysql
+  database "shopDB" as db
+  mysql --> db
+}
+
+client1 -down-> appserver : <<HTTPS:443>>
+client2 -down-> appserver : <<HTTPS:443>>
+appserver -down-> dbserver : <<JDBC:3306>>
+
+note bottom of appserver
+  Deployment Details:
+  - OS: Ubuntu 22.04 LTS
+  - RAM: 16 GB
+  - CPU: 4 cores
+  - Tomcat 9.0.65
+end note
+
+note bottom of dbserver
+  Database Details:
+  - OS: Ubuntu 22.04 LTS
+  - RAM: 32 GB
+  - MySQL 8.0.30
+  - Storage: 500 GB SSD
+end note
+
+@enduml

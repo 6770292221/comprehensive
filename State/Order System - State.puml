@@ -1,0 +1,30 @@
+@startuml Order System - State Diagram
+
+[*] --> New
+
+New --> Confirmed : Customer confirms order
+New --> Cancelled : Customer cancels
+
+Confirmed --> Processing : Payment received
+Confirmed --> Cancelled : Payment failed
+
+Processing --> Shipped : Items packed and dispatched
+Processing --> Cancelled : Items out of stock
+
+Shipped --> InTransit : Package picked up by courier
+InTransit --> Delivered : Customer receives package
+InTransit --> Failed : Delivery failed
+
+Delivered --> Completed : Customer confirms receipt
+Delivered --> Returned : Customer initiates return
+
+Failed --> InTransit : Retry delivery
+Failed --> Returned : Return to sender
+
+Returned --> Refunded : Refund processed
+Cancelled --> Refunded : Refund processed
+
+Refunded --> [*]
+Completed --> [*]
+
+@enduml

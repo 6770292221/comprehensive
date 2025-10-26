@@ -1,0 +1,43 @@
+@startuml Smart Bus - Request Bus
+
+start
+
+:Passenger opens app;
+:Login to account;
+:Enter pickup location;
+:Enter destination;
+:Select number of passengers;
+:Submit request;
+
+:System calculates route;
+:System calculates ETA;
+
+if (Bus available?) then (yes)
+    :Assign nearest bus;
+    :Display ETA (15 min);
+    :Send notification to driver;
+
+    fork
+        :Driver accepts request;
+        :Start navigation;
+    fork again
+        :Passenger sees live tracking;
+        :Display bus location on map;
+    end fork
+
+    :Bus arrives at pickup;
+    :Notify passenger;
+    :Passenger boards bus;
+    :Confirm boarding;
+    :Start trip;
+    :Bus arrives at destination;
+    :Passenger gets off;
+    :Complete trip;
+    stop
+else (no)
+    :Show no bus available;
+    :Suggest wait time;
+    stop
+endif
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml E-commerce System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Customer as c
+actor Seller as s
+actor Admin as a
+actor "Payment Gateway" as p
+
+rectangle "E-commerce System" {
+    usecase "Register Account" as UC1
+    usecase "Login" as UC2
+    usecase "Browse Products" as UC3
+    usecase "Search Products" as UC4
+    usecase "View Product Details" as UC5
+    usecase "Add to Cart" as UC6
+    usecase "Checkout" as UC7
+    usecase "Make Payment" as UC8
+    usecase "Track Order" as UC9
+    usecase "Write Review" as UC10
+    usecase "Add Product" as UC11
+    usecase "Update Product" as UC12
+    usecase "Manage Orders" as UC13
+    usecase "Manage Users" as UC14
+    usecase "Generate Report" as UC15
+}
+
+c --> UC1
+c --> UC2
+c --> UC3
+c --> UC4
+c --> UC5
+c --> UC6
+c --> UC7
+c --> UC9
+c --> UC10
+
+s --> UC11
+s --> UC12
+s --> UC13
+
+a --> UC14
+a --> UC15
+
+p --> UC8
+
+UC7 ..> UC8 : <<include>>
+UC5 ..> UC6 : <<extend>>
+UC10 ..> UC9 : <<extend>>
+
+@enduml

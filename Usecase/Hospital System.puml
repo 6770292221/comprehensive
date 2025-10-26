@@ -1,0 +1,50 @@
+@startuml Hospital System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Patient as p
+actor Doctor as d
+actor Nurse as n
+actor Receptionist as r
+actor Pharmacist as ph
+
+rectangle "Hospital System" {
+    usecase "Register Patient" as UC1
+    usecase "Book Appointment" as UC2
+    usecase "Check Patient Record" as UC3
+    usecase "Diagnose Patient" as UC4
+    usecase "Prescribe Medicine" as UC5
+    usecase "Admit Patient" as UC6
+    usecase "Discharge Patient" as UC7
+    usecase "Update Patient Record" as UC8
+    usecase "Check Vital Signs" as UC9
+    usecase "Dispense Medicine" as UC10
+    usecase "Generate Bill" as UC11
+    usecase "Pay Bill" as UC12
+}
+
+p --> UC2
+p --> UC12
+
+r --> UC1
+r --> UC11
+
+d --> UC3
+d --> UC4
+d --> UC5
+d --> UC6
+d --> UC7
+d --> UC8
+
+n --> UC9
+n --> UC8
+
+ph --> UC10
+
+UC4 ..> UC3 : <<include>>
+UC5 ..> UC4 : <<include>>
+UC10 ..> UC5 : <<include>>
+UC7 ..> UC11 : <<include>>
+
+@enduml

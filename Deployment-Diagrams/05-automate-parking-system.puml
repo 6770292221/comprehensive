@@ -1,0 +1,87 @@
+@startuml automate-parking-system
+!theme plain
+title Automate Parking System - Deployment Diagram
+
+skinparam rectangleBackgroundColor<<entry>> lightblue
+skinparam rectangleBackgroundColor<<control>> lightyellow
+skinparam rectangleBackgroundColor<<app>> lightgreen
+skinparam rectangleBackgroundColor<<data>> pink
+
+rectangle "Entry/Exit Points" <<entry>> {
+  node "<<device>>\nEntry Kiosk" as kiosk_in {
+    [License Plate Camera]
+    [Display Screen]
+    [Card Reader]
+  }
+
+  node "<<device>>\nExit Kiosk" as kiosk_out {
+    [Verification Camera]
+    [Payment Terminal]
+    [Barrier Gate]
+  }
+}
+
+rectangle "Parking Control" <<control>> {
+  node "<<PLC>>\nParking Controller 1" as plc1 {
+    [Vehicle Lift]
+    [Sensors]
+    [Emergency Stop]
+  }
+
+  node "<<PLC>>\nParking Controller 2" as plc2 {
+    [Vehicle Lift]
+    [Sensors]
+    [Emergency Stop]
+  }
+}
+
+rectangle "Application Layer" <<app>> {
+  node "<<app server>>\nApp Server (Primary)" as app1 {
+    [Plate Recognition]
+    [Parking Management]
+    [Payment Service]
+  }
+
+  node "<<app server>>\nApp Server (Standby)" as app2 {
+    [Standby Services]
+  }
+
+  node "<<cache>>\nRedis Cache" as cache {
+    [Slot Cache]
+  }
+}
+
+rectangle "Data Layer" <<data>> {
+  node "<<database>>\nDB Primary" as db1 {
+    database "ParkingDB"
+  }
+
+  node "<<database>>\nDB Replica" as db2 {
+    database "ParkingDB"
+  }
+}
+
+kiosk_in -down-> app1 : <<HTTPS>>
+kiosk_out -down-> app1 : <<HTTPS>>
+plc1 -down-> app1 : <<TCP/IP>>
+plc2 -down-> app1 : <<TCP/IP>>
+
+app1 --> cache : <<Redis>>
+app1 -down-> db1 : <<Write>>
+app1 -down-> db2 : <<Read>>
+app1 -right-> app2 : <<Heartbeat>>
+db1 -right-> db2 : <<Replication>>
+
+note right of app2
+  High Availability:
+  - Auto Failover
+  - < 5 sec switch
+end note
+
+note bottom of cache
+  Performance:
+  - 2-sec response
+  - Real-time status
+end note
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml AI Safety - Detect Drowsiness
+
+participant "In-Vehicle Camera" as Camera
+participant "AI Detection System" as AI
+participant "Risk Scorer" as Risk
+participant "Alert System" as Alert
+participant "Evidence Storage" as Storage
+participant "Safety Dashboard" as Dashboard
+
+activate Camera
+Camera -> Camera: Capture Video Stream
+
+Camera -> AI: Send Frame
+activate AI
+
+AI -> AI: Analyze Driver Face\n(Eyes, Head Position)
+
+alt Drowsiness Detected
+    AI -> Risk: Calculate Risk Score
+    activate Risk
+    Risk --> AI: High Risk (Score: 8/10)
+    deactivate Risk
+
+    AI -> Alert: Trigger Alert
+    activate Alert
+    Alert -> Alert: Sound Alarm
+    Alert -> Alert: Vibrate Seat
+    Alert --> AI: Alert Sent
+    deactivate Alert
+
+    AI -> Storage: Capture Evidence Clip\n(10 sec before + 10 sec after)
+    activate Storage
+    Storage --> AI: Clip Saved
+    deactivate Storage
+
+    AI -> Dashboard: Send Event\n(Drowsiness, High Risk)
+    activate Dashboard
+    Dashboard --> AI: Event Logged
+    deactivate Dashboard
+
+else No Drowsiness
+    AI --> Camera: Continue Monitoring
+end
+
+deactivate AI
+
+Camera -> Camera: Wait 200ms
+Camera -> AI: Send Next Frame
+
+@enduml

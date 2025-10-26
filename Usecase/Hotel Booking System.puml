@@ -1,0 +1,46 @@
+@startuml Hotel Booking System
+
+left to right direction
+skinparam packageStyle rectangle
+
+actor Guest as g
+actor Receptionist as r
+actor "Hotel Manager" as m
+actor Housekeeping as h
+
+rectangle "Hotel Booking System" {
+    usecase "Search Rooms" as UC1
+    usecase "Check Availability" as UC2
+    usecase "Book Room" as UC3
+    usecase "Cancel Booking" as UC4
+    usecase "Check-in" as UC5
+    usecase "Check-out" as UC6
+    usecase "Make Payment" as UC7
+    usecase "Request Services" as UC8
+    usecase "Update Room Status" as UC9
+    usecase "Manage Bookings" as UC10
+    usecase "Generate Invoice" as UC11
+    usecase "Manage Rooms" as UC12
+    usecase "View Reports" as UC13
+}
+
+g --> UC1
+g --> UC3
+g --> UC4
+g --> UC8
+
+r --> UC5
+r --> UC6
+r --> UC10
+r --> UC11
+
+m --> UC12
+m --> UC13
+
+h --> UC9
+
+UC3 ..> UC2 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC6 ..> UC11 : <<include>>
+
+@enduml

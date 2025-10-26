@@ -1,0 +1,17 @@
+@startuml with-backup
+title System with Backup
+
+node "Client" as client
+
+node "Server" as server {
+  [Application]
+}
+
+database "Main Database" as db1
+database "Backup Database" as db2
+
+client --> server
+server --> db1 : Read/Write
+db1 --> db2 : Backup
+
+@enduml

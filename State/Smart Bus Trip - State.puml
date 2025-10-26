@@ -1,0 +1,32 @@
+@startuml Smart Bus Trip - State Diagram
+
+[*] --> Requested : Passenger requests bus
+
+Requested --> Searching : System finds available bus
+Searching --> Assigned : Bus assigned to request
+Searching --> NoService : No bus available
+
+Assigned --> DriverNotified : Notify driver
+DriverNotified --> Accepted : Driver accepts
+DriverNotified --> Declined : Driver declines
+
+Declined --> Searching : Find another bus
+Declined --> Cancelled : Cannot find driver
+
+Accepted --> EnRoute : Driver navigating to pickup
+EnRoute --> Arrived : Bus arrives at pickup point
+Arrived --> WaitingForBoarding : Notify passenger
+
+WaitingForBoarding --> Boarded : Passenger boards bus
+WaitingForBoarding --> NoShow : Passenger doesn't show (5 min)
+
+Boarded --> InTransit : Trip started
+InTransit --> ArrivedDestination : Bus arrives at destination
+ArrivedDestination --> Completed : Passenger alights
+
+Completed --> [*]
+NoShow --> Cancelled : Mark as no-show
+NoService --> Cancelled : Cancel request
+Cancelled --> [*]
+
+@enduml

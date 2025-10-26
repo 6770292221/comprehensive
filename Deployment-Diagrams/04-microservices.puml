@@ -1,0 +1,83 @@
+@startuml microservices
+!theme plain
+title E-Commerce Microservices Architecture
+
+skinparam nodeBackgroundColor<<service>> lightyellow
+skinparam nodeBackgroundColor<<infrastructure>> lightblue
+
+actor "Customer" as customer
+actor "Admin" as admin
+
+node "<<CDN>>\nContent Delivery\nNetwork" as cdn {
+  [Static Files]
+}
+
+node "<<API Gateway>>\nAPI Gateway" as gateway <<infrastructure>> {
+  [Kong / AWS API Gateway]
+}
+
+node "<<service>>\nUser Service" as userservice <<service>> {
+  [User API]
+  database "UserDB"
+}
+
+node "<<service>>\nProduct Service" as productservice <<service>> {
+  [Product API]
+  database "ProductDB"
+}
+
+node "<<service>>\nOrder Service" as orderservice <<service>> {
+  [Order API]
+  database "OrderDB"
+}
+
+node "<<service>>\nPayment Service" as paymentservice <<service>> {
+  [Payment API]
+  database "PaymentDB"
+}
+
+node "<<service>>\nNotification Service" as notifyservice <<service>> {
+  [Email/SMS API]
+}
+
+node "<<cache>>\nRedis Cache" as cache <<infrastructure>> {
+  [Shared Cache]
+}
+
+node "<<message queue>>\nMessage Broker" as mq <<infrastructure>> {
+  [RabbitMQ / Kafka]
+}
+
+customer -down-> cdn : <<HTTPS>>
+customer -down-> gateway : <<HTTPS>>
+admin -down-> gateway : <<HTTPS>>
+
+gateway -down-> userservice : <<HTTP/REST>>
+gateway -down-> productservice : <<HTTP/REST>>
+gateway -down-> orderservice : <<HTTP/REST>>
+gateway -down-> paymentservice : <<HTTP/REST>>
+
+orderservice -up-> mq : <<publish event>>
+paymentservice -up-> mq : <<publish event>>
+mq -down-> notifyservice : <<subscribe>>
+
+productservice -right-> cache : <<Redis>>
+orderservice --> cache : <<Redis>>
+
+note right of gateway
+  API Gateway:
+  - Authentication
+  - Rate Limiting
+  - Request Routing
+  - Load Balancing
+end note
+
+note bottom of mq
+  Event-Driven:
+  - Order Created
+  - Payment Completed
+  - Async Communication
+  - Loose Coupling
+end note
+
+@enduml

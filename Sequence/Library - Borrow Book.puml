@@ -1,0 +1,50 @@
+@startuml Library - Borrow Book
+
+actor Member
+participant "Library System" as System
+participant "Book Database" as BookDB
+participant "Member Database" as MemberDB
+participant "Loan Records" as Loan
+
+Member -> System: Search Book
+activate System
+
+System -> BookDB: Query Book
+activate BookDB
+BookDB --> System: Book Found
+deactivate BookDB
+
+Member -> System: Request Borrow Book
+
+System -> MemberDB: Check Member Status
+activate MemberDB
+MemberDB --> System: Member Valid
+deactivate MemberDB
+
+System -> BookDB: Check Book Availability
+activate BookDB
+
+alt Book Available
+    BookDB --> System: Available
+    deactivate BookDB
+
+    System -> BookDB: Update Book Status
+    activate BookDB
+    BookDB --> System: Status Updated
+    deactivate BookDB
+
+    System -> Loan: Create Loan Record
+    activate Loan
+    Loan --> System: Record Created
+    deactivate Loan
+
+    System --> Member: Borrow Success\n(Due Date: 14 days)
+else Book Not Available
+    BookDB --> System: Not Available
+    deactivate BookDB
+    System --> Member: Book Already Borrowed\n(Reserve Option Available)
+end
+
+deactivate System
+
+@enduml
